@@ -22,36 +22,27 @@
 #include "lwip/sys.h"
 #include "lwip/netdb.h"
 #include "lwip/dns.h"
-#include "dht.h"
-#include "/home/iot/esp/ceiot_base/config/config.h"   // esto es mejorable...
+#include <bmp280.h>
+<<<<<<< HEAD:esp32-bmp280/main/http_request_example_main.c
+#include "/home/robaxt/esp/ceiot_base/config/config.h"   // esto es mejorable...
+=======
+#include "../config.h"
+>>>>>>> 66312eb20e56204e407a94631a2a4fb6ccd41867:esp32c3-bmp280/main/main.c
 
-/* Constants that aren't configurable in menuconfig */
-#define WEB_SERVER API_IP
-#define WEB_PORT API_PORT
+/* HTTP constants that aren't configurable in menuconfig */
 #define WEB_PATH "/measurement"
-
-static const dht_sensor_type_t sensor_type = DHT_TYPE_DHT11;
-static const gpio_num_t dht_gpio = 17;
-
 
 static const char *TAG = "temp_collector";
 
-static char *REQUEST_GET = "GET " WEB_PATH " HTTP/1.0\r\n"
-    "Host: "WEB_SERVER":"WEB_PORT"\r\n"
-    "User-Agent: esp-idf/1.0 esp32\r\n"
-    "\r\n";
+static char *BODY = "id="DEVICE_ID"&t=%0.2f&h=%0.2f";
 
-static char *REQUEST_POST = "POST " WEB_PATH " HTTP/1.0\r\n"
-    "Host: "WEB_SERVER":"WEB_PORT"\r\n"
-    "User-Agent: esp-idf/1.0 esp32s3 saola\r\n"
+static char *REQUEST_POST = "POST "WEB_PATH" HTTP/1.0\r\n"
+    "Host: "API_IP_PORT"\r\n"
+    "User-Agent: "USER_AGENT"\r\n"
     "Content-Type: application/x-www-form-urlencoded\r\n"
-    "Content-Length: 15\r\n"
+    "Content-Length: %d\r\n"
     "\r\n"
-    "id=" DEVICE_ID "&t=%d&h=%d";
-
-
-// Ejercicio: enviar POST    
-// Ejercicio: enviar json
+    "%s";
 
 static void http_get_task(void *pvParameters)
 {
@@ -62,24 +53,42 @@ static void http_get_task(void *pvParameters)
     struct addrinfo *res;
     struct in_addr *addr;
     int s, r;
+    char body[64];
     char recv_buf[64];
 
     char send_buf[256];
 
-    int16_t temperature = 0;
-    int16_t humidity = 0;
- 
-    while(1) {
-        if (dht_read_data(sensor_type, dht_gpio, &humidity, &temperature) == ESP_OK) {
-            ESP_LOGI(TAG,"Humidity: %d%% Temp: %dC\n", humidity / 10, temperature / 10);
-            sprintf(send_buf, REQUEST_POST, temperature / 10, humidity / 10);
-	    ESP_LOGI(TAG,"sending: \n%s\n",send_buf);
-        } else {
-            ESP_LOGE(TAG,"Could not read data from sensor\n");
-	    // Ejercicio: enviar mensaje
-        }
+    bmp280_params_t params;
+    bmp280_init_default_params(&params);
+    bmp280_t dev;
+    memset(&dev, 0, sizeof(bmp280_t));
 
-        int err = getaddrinfo(WEB_SERVER, WEB_PORT, &hints, &res);
+    ESP_ERROR_CHECK(bmp280_init_desc(&dev, BMP280_I2C_ADDRESS_0, 0, SDA_GPIO, SCL_GPIO));
+    ESP_ERROR_CHECK(bmp280_init(&dev, &params));
+
+    bool bme280p = dev.id == BME280_CHIP_ID;
+    ESP_LOGI(TAG, "BMP280: found %s\n", bme280p ? "BME280" : "BMP280");
+
+    float pressure, temperature, humidity;
+
+
+
+    while(1) {
+        if (bmp280_read_float(&dev, &temperature, &pressure, &humidity) != ESP_OK) {
+            ESP_LOGI(TAG, "Temperature/pressure reading failed\n");
+        } else {
+            ESP_LOGI(TAG, "Pressure: %.2f Pa, Temperature: %.2f C", pressure, temperature);
+//            if (bme280p) {
+                ESP_LOGI(TAG,", Humidity: %.2f\n", humidity);
+		sprintf(body, BODY, temperature , humidity );
+                sprintf(send_buf, REQUEST_POST, (int)strlen(body),body );
+//	    } else {
+//                sprintf(send_buf, REQUEST_POST, temperature , 0);
+//            }
+	    ESP_LOGI(TAG,"sending: \n%s\n",send_buf);
+        }    
+
+        int err = getaddrinfo(API_IP, API_PORT, &hints, &res);
 
         if(err != 0 || res == NULL) {
             ESP_LOGE(TAG, "DNS lookup failed err=%d res=%p", err, res);
@@ -158,11 +167,8 @@ void app_main(void)
     ESP_ERROR_CHECK( nvs_flash_init() );
     ESP_ERROR_CHECK(esp_netif_init());
     ESP_ERROR_CHECK(esp_event_loop_create_default());
+    ESP_ERROR_CHECK(i2cdev_init());
 
-    /* This helper function configures Wi-Fi or Ethernet, as selected in menuconfig.
-     * Read "Establishing Wi-Fi or Ethernet Connection" section in
-     * examples/protocols/README.md for more information about this function.
-     */
     ESP_ERROR_CHECK(example_connect());
 
     xTaskCreate(&http_get_task, "http_get_task", 4096, NULL, 5, NULL);
