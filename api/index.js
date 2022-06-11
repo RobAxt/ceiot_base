@@ -24,12 +24,12 @@ async function getDatabase() {
 }
 
 async function insertMeasurement(message) {
-    const {insertedId} = await database.collection(collectionName).insertOne(message);
-    return insertedId;
+    const result = await database.collection(collectionName).insertOne(message);
+    return result.insertedCount;
 }
 
 async function getMeasurements() {
-    return await database.collection(collectionName).find({}).toArray();	
+    return await database.collection(collectionName).find({}).toArray();
 }
 
 const app = express();
@@ -42,14 +42,33 @@ app.use('/js', express.static('spa'));
 const PORT = 8080;
 
 app.post('/measurement', function (req, res) {
-  console.log("timestamp : " + req.body.ts + " | device id : " + req.body.id + " | key : " + req.body.key + " | temperature : " + req.body.t + " | humidity : " + req.body.h);	
+
+// Revisar si Payload viene con TimeStamp
   if ( !req.body.ts ) {
      req.body.ts = Math.round(new Date().getTime()/1000);
-     console.log("timestamp inserted : " + req.body.ts);
+     //console.log("timestamp inserted : " + req.body.ts);
   }
+  console.log("timestamp : " + req.body.ts + " | device id : " + req.body.id + " | key : " + req.body.key + " | temperature : " + req.body.t + " | pressure : " + req.body.p +  " | humidity : " + req.body.h);
 
-  const {insertedId} = insertMeasurement({ts:req.body.ts, id:req.body.id, t:req.body.t, h:req.body.h});
-  res.send("received measurement into " +  insertedId);
+// Validad KEY
+  try {
+    var key = db.public.many("SELECT key FROM devices WHERE device_id = '"+req.body.id+"'");
+    //console.log("Lei la KEY: " + key[0].key + " - Recibí la KEY: " + req.body.key);
+    if (key[0].key == req.body.key) {
+      // Revisa si viene la Humdedad
+      if ( !req.body.h) {
+        insertedId = insertMeasurement({ts:req.body.ts, id:req.body.id, t:req.body.t, p:req.body.p});
+        res.send("received measurement into " +  insertedId + "\r\n");
+      } else {
+        insertedId = insertMeasurement({ts:req.body.ts, id:req.body.id, t:req.body.t, p:req.body.p, h:req.body.h});
+        res.send("received measurement into " +  insertedId + "\r\n");
+      }
+    }
+  } catch (err) {
+      res.send("No hay match de las keys\r\n");
+      console.log("No hay match de la keys\r\n");
+  }
+  
 });
 
 app.post('/device', function (req, res) {
@@ -94,9 +113,9 @@ function render(template, vars) {
 	   }
            line = line.replace(match[0], result ? result : '');
 	   match = line.match(regexp);
-       }	       
+       }
        return line;
-   }).join('\n');	
+   }).join('\n');
 }
 
 app.get('/web/device/:id', function (req,res) {
@@ -113,7 +132,7 @@ app.get('/web/device/:id', function (req,res) {
     var device = db.public.many("SELECT * FROM devices WHERE device_id = '"+req.params.id+"'");
     console.log(device);
     res.send(render(template,{id:device[0].device_id, key: device[0].key, name:device[0].name}));
-});	
+});
 
 
 app.get('/term/device/:id', function (req, res) {

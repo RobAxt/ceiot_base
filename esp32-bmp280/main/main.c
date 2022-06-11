@@ -23,22 +23,32 @@
 #include "lwip/netdb.h"
 #include "lwip/dns.h"
 #include <bmp280.h>
-#include "../config.h"
+#include "config.h"   
 
-/* HTTP Constants that aren't configurable in menuconfig */
+/* Constants that aren't configurable in menuconfig */
+#define WEB_SERVER API_IP
+#define WEB_PORT API_PORT
 #define WEB_PATH "/measurement"
+
+#define SDA_GPIO 21
+#define SCL_GPIO 22
+
 
 static const char *TAG = "temp_collector";
 
-static char *BODY = "id="DEVICE_ID"&t=%0.2f&h=%0.2f";
+static char *REQUEST_GET = "GET " WEB_PATH " HTTP/1.0\r\n"
+    "Host: "WEB_SERVER":"WEB_PORT"\r\n"
+    "User-Agent: esp-idf/1.0 esp32\r\n"
+    "\r\n";
 
-static char *REQUEST_POST = "POST "WEB_PATH" HTTP/1.0\r\n"
-    "Host: "API_IP_PORT"\r\n"
-    "User-Agent: "USER_AGENT"\r\n"
+static char *REQUEST_POST = "POST " WEB_PATH " HTTP/1.0\r\n"
+    "Host: "WEB_SERVER":"WEB_PORT"\r\n"
+    "User-Agent: esp-idf/1.0 esp32c3 devkitC\r\n"
     "Content-Type: application/x-www-form-urlencoded\r\n"
     "Content-Length: %d\r\n"
-    "\r\n"
-    "%s";
+    "\r\n";
+static char *PAYLOAD_BME = "id=" DEVICE_ID "&key=" KEY "&t=%.2f&p=%.2f&h=%.2f";
+static char *PAYLOAD_BMP = "id=" DEVICE_ID "&key=" KEY "&t=%.2f&p=%.2f";
 
 static void http_get_task(void *pvParameters)
 {
@@ -49,10 +59,11 @@ static void http_get_task(void *pvParameters)
     struct addrinfo *res;
     struct in_addr *addr;
     int s, r;
-    char body[64];
     char recv_buf[64];
 
     char send_buf[256];
+    char payload_buf[64];
+
 
     bmp280_params_t params;
     bmp280_init_default_params(&params);
@@ -72,18 +83,19 @@ static void http_get_task(void *pvParameters)
         if (bmp280_read_float(&dev, &temperature, &pressure, &humidity) != ESP_OK) {
             ESP_LOGI(TAG, "Temperature/pressure reading failed\n");
         } else {
-            ESP_LOGI(TAG, "Pressure: %.2f Pa, Temperature: %.2f C", pressure, temperature);
-//            if (bme280p) {
-                ESP_LOGI(TAG,", Humidity: %.2f\n", humidity);
-                sprintf(body, BODY, temperature , humidity );
-                sprintf(send_buf, REQUEST_POST, (int)strlen(body),body );
-//	    } else {
-//                sprintf(send_buf, REQUEST_POST, temperature , 0);
-//            }
-	    ESP_LOGI(TAG,"sending: \n%s\n",send_buf);
+            if (bme280p) {
+                ESP_LOGI(TAG," Temp: %.2fC Pressure: %.2fPa Humidity: %.2f%%\n",temperature, pressure, humidity);
+                sprintf(payload_buf, PAYLOAD_BME, temperature,pressure, humidity);
+	        } else {
+                ESP_LOGI(TAG," Temp: %.2fC Pressure: %.2fPa\n",temperature, pressure);
+                sprintf(payload_buf, PAYLOAD_BMP, temperature,pressure);
+            }
+        sprintf(send_buf, REQUEST_POST, (int)strlen(payload_buf));
+        strcat(send_buf,payload_buf);
+        ESP_LOGI(TAG,"sending: \n%s\n",send_buf);
         }    
 
-        int err = getaddrinfo(API_IP, API_PORT, &hints, &res);
+        int err = getaddrinfo(WEB_SERVER, WEB_PORT, &hints, &res);
 
         if(err != 0 || res == NULL) {
             ESP_LOGE(TAG, "DNS lookup failed err=%d res=%p", err, res);
@@ -159,7 +171,7 @@ static void http_get_task(void *pvParameters)
 
 void app_main(void)
 {
-    ESP_ERROR_CHECK( nvs_flash_init() );
+    ESP_ERROR_CHECK(nvs_flash_init());
     ESP_ERROR_CHECK(esp_netif_init());
     ESP_ERROR_CHECK(esp_event_loop_create_default());
     ESP_ERROR_CHECK(i2cdev_init());
