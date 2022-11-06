@@ -8,9 +8,7 @@ i0616 - Roberto Oscar Axt
 
 Armar una [cyberkillchain](https://www.lockheedmartin.com/en-us/capabilities/cyber/cyber-kill-chain.html) usando técnicas de la matriz de [Att&ck](https://attack.mitre.org/tactics/TA0043/) para un escenario relacionado a tu trabajo práctico.
 
-
 ## Datos trabajo práctico
-
 
 El Proyecto Final de CEIOT es el desarrollo de un Stack de Software para la Gestión de Repetidoras de Comunicación.
 Las Repetidoras se encuentran a lo largo del gasoducto de TGN separadas unos 50 km. La infraestructura de una estación repetidora del troncal de microondas está formada por un shelter, una torre de comunicaciones y un cerco perimetral.
@@ -29,20 +27,26 @@ Las restantes capas estarán soportadas por la reTerminal de Seeed Studio, que s
 Gather Victim Host Information [T1592](https://attack.mitre.org/techniques/T1592)
 
 - En cada repetidora esta la misma red de sensores Wi-Fi sin acceso a internet, provista por la reTerminal. Aquí el atacante puede descubrir que se trata de un dispositivo con una Raspberry Pi (RPi) [T1592.001](https://attack.mitre.org/techniques/T1592/001/) y de los servicios que brindan [T1592.002](https://attack.mitre.org/techniques/T1592/002/).
-- Robar fisicamente el dispositivo (reTerminal) y algún nodo de la red de sensores (ESP32-C3) para poder analizar las aplicaciones que corren en la misma [T1592.003](https://attack.mitre.org/techniques/T1592/003/).
-
+- Hurtar fisicamente el dispositivo (reTerminal) y algún nodo de la red de sensores (ESP32-C3) para poder analizar las aplicaciones que corren en la misma [T1592.003](https://attack.mitre.org/techniques/T1592/003/).
 
 Active Scanning [T1595](https://attack.mitre.org/techniques/T1595):
 
 - Escaneo de vulnerabilidades [T1595.002](https://attack.mitre.org/techniques/T1595/002/). Analizando el tráfico de la red Wi-Fi se puede detectar los protocolos de comunicación que se están usando y descubrir que aplicaciones corren en cada puerto TCP. 
+- Escaneo de lista de palabras [T1595.003](https://attack.mitre.org/techniques/T1595/003/). Tanto de manera remota por la red Wi-Fi o con la manipulación física del equipo se puede obtener información del contenido del dispositivo y la infraestructura a la que se encuentra conectado.
 
 ### Weaponization
 
-- Vulnerabilidades de las RPi. [NIST NVD Raspberry Pi](https://nvd.nist.gov/vuln/search/results?form_type=Basic&results_type=overview&query=raspberry+pi&search_type=all&isCpeNameSearch=false)
-	- Ataque a Access Point en RPi. [CVE-2020-24572](https://nvd.nist.gov/vuln/detail/CVE-2020-24572)
-	- Uso de claves por defecto en RPi. [CVE-2021-38759](https://nvd.nist.gov/vuln/detail/CVE-2021-38759)
-	- Elevación de privilegios mediante un proceso de debug. [CVE-2018-18068](https://nvd.nist.gov/vuln/detail/CVE-2018-18068)
+Vulnerabilidades Raspberry Pi. [NIST NVD Raspberry Pi](https://nvd.nist.gov/vuln/search/results?form_type=Basic&results_type=overview&query=raspberry+pi&search_type=all&isCpeNameSearch=false)
 
+- Ataque a Access Point en RPi. [CVE-2020-24572](https://nvd.nist.gov/vuln/detail/CVE-2020-24572)
+- Uso de claves por defecto en RPi. [CVE-2021-38759](https://nvd.nist.gov/vuln/detail/CVE-2021-38759)
+- Elevación de privilegios mediante un proceso de debug. [CVE-2018-18068](https://nvd.nist.gov/vuln/detail/CVE-2018-18068)
+
+Vulnerabilidades Node-Red [NIST NVD Node-Red](https://nvd.nist.gov/vuln/search/results?form_type=Basic&results_type=overview&query=node-red&search_type=all&isCpeNameSearch=false)
+
+- Esta vulnerabiliad problematica del node-red-dashboard afecta a algunos procesos desconocidos del archivo components/ui-component/ui-component-ctrl.js del componente ui_text Format Handler. La manipulación conduce a secuencias de comandos entre sitios. El ataque puede iniciarse de forma remota.[CVE-2022-3783](https://nvd.nist.gov/vuln/detail/CVE-2022-3783)
+- Es posible inyectar JavaScript dentro de las versiones de node-red-dashboard anteriores a la versión 2.17.0 debido a que el nodo ui_notification acepta HTML sin procesar de forma predeterminada. [CVE-2019-10756](https://nvd.nist.gov/vuln/detail/CVE-2019-10756)
+- Node-RED-Dashboard antes de 2.26.2 permite el recorrido del directorio ui_base/js/..%2f para leer archivos. [CVE-2021-3223](https://nvd.nist.gov/vuln/detail/CVE-2021-3223)
 
 ### Delivery
 
@@ -53,5 +57,4 @@ Active Scanning [T1595](https://attack.mitre.org/techniques/T1595):
 ### Command and Control
 
 ### Actions on Objectives
-
 
