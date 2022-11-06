@@ -1,14 +1,12 @@
 # Ejercicio CiberKillChain - Ataque
 
-Haga una copia de este documto
-
 ## Alumno
 
 i0616 - Roberto Oscar Axt
 
 ## Enunciado
 
-Armar una cyberkillchain usando técnicas de la matriz de Att&ck para un escenario relacionado a tu trabajo práctico
+Armar una [cyberkillchain](https://www.lockheedmartin.com/en-us/capabilities/cyber/cyber-kill-chain.html) usando técnicas de la matriz de [Att&ck](https://attack.mitre.org/tactics/TA0043/) para un escenario relacionado a tu trabajo práctico.
 
 
 ## Datos trabajo práctico
@@ -36,7 +34,7 @@ Gather Victim Host Information [T1592](https://attack.mitre.org/techniques/T1592
 
 Active Scanning [T1595](https://attack.mitre.org/techniques/T1595):
 
-
+- Escaneo de vulnerabilidades [T1595.002](https://attack.mitre.org/techniques/T1595/002/). Analizando el tráfico de la red Wi-Fi se puede detectar los protocolos de comunicación que se están usando y descubrir que aplicaciones corren en cada puerto TCP. 
 
 ### Weaponization
 
