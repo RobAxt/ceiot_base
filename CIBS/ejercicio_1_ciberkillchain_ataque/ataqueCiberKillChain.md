@@ -54,7 +54,7 @@ Vulnerabilidades Grafana [NIST NVD Grafana](https://nvd.nist.gov/vuln/search/res
 
 - La más reciente, las versiones anteriores a la 9.1.8 y la 8.5.14 permiten que un usuario bloquee el intento de inicio de sesión de otro registrando la dirección de correo electrónico de otra persona como nombre de usuario. [CVE-2022-39229](https://nvd.nist.gov/vuln/detail/CVE-2022-39229)
 
-En sintesis el sistema cuenta con varias vulnerabiliades que permiten en sintesis la toma de control de dispositivo y la ejecucion de codigo externo.
+En sintesis el sistema cuenta con varias vulnerabiliades que permiten la toma de control de dispositivo y la ejecucion de codigo externo.
 
 
 ### Delivery
@@ -76,7 +76,7 @@ En sintesis el sistema cuenta con varias vulnerabiliades que permiten en sintesi
 
 ### Command and Control
 
-- Si la ejecucion del cronetab fue exitosa y la conexion saliente no fue detertada por la red operativa ya tiene una consola bash con los privilegios de ese usuario. Teniendo todo el tiempo para el escalamiento de privilegios.
+- Si la ejecucion del cronetab fue exitosa y la conexion saliente no fue detectada por la red operativa ya tiene una consola bash con los privilegios de ese usuario. Teniendo todo el tiempo para el escalamiento de privilegios.
 
 
 ### Actions on Objectives
