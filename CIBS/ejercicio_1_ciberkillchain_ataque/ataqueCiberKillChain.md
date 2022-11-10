@@ -53,16 +53,24 @@ Vulnerabilidades Grafana [NIST NVD Grafana](https://nvd.nist.gov/vuln/search/res
 
 - La más reciente, las versiones anteriores a la 9.1.8 y la 8.5.14 permiten que un usuario bloquee el intento de inicio de sesión de otro registrando la dirección de correo electrónico de otra persona como nombre de usuario. [CVE-2022-39229](https://nvd.nist.gov/vuln/detail/CVE-2022-39229)
 
-Vulnerabilidades Portainer [NIST NVD Portainer](https://nvd.nist.gov/vuln/search/results?form_type=Basic&results_type=overview&query=portainer&search_type=all&isCpeNameSearch=false)
-
 
 ### Delivery
 
+- Ingreso forzado a la repetidora y habiendo hurtado anteriormente un dispositivo de otra repetidora, podría instalar algun exploit.
+- Basandose en la vulnerabilidad [CVE-2020-24572](https://nvd.nist.gov/vuln/detail/CVE-2020-24572) puede obtener acceso.
+ 
+
 ### Exploitation
+
+- Si logro ingresar por Wi-Fi puede basarse en las vulnerabiliad en alguno de los servicios para inyectar codigo JS.
+- Si logro acceso fisico puede instalar un exploit.
+
 
 ### Installation
 
+
 ### Command and Control
+
 
 ### Actions on Objectives
 
