@@ -38,7 +38,7 @@ Vulnerabilidades Raspberry Pi. [NIST NVD Raspberry Pi](https://nvd.nist.gov/vuln
 - Ataque a Access Point en RPi. [CVE-2020-24572](https://nvd.nist.gov/vuln/detail/CVE-2020-24572)
 - Uso de claves por defecto en RPi. [CVE-2021-38759](https://nvd.nist.gov/vuln/detail/CVE-2021-38759)
 - Elevación de privilegios mediante un proceso de debug. [CVE-2018-18068](https://nvd.nist.gov/vuln/detail/CVE-2018-18068)
-
+<!---
 Vulnerabilidades Node-Red [NIST NVD Node-Red](https://nvd.nist.gov/vuln/search/results?form_type=Basic&results_type=overview&query=node-red&search_type=all&isCpeNameSearch=false)
 
 - Esta vulnerabiliad problematica del node-red-dashboard afecta a algunos procesos desconocidos del archivo components/ui-component/ui-component-ctrl.js del componente ui_text Format Handler. La manipulación conduce a secuencias de comandos entre sitios. El ataque puede iniciarse de forma remota.[CVE-2022-3783](https://nvd.nist.gov/vuln/detail/CVE-2022-3783)
@@ -53,7 +53,7 @@ Vulnerabilidades InfluxDB [NIST NVD InfluxDB](https://nvd.nist.gov/vuln/search/r
 Vulnerabilidades Grafana [NIST NVD Grafana](https://nvd.nist.gov/vuln/search/results?form_type=Basic&results_type=overview&query=grafana&search_type=all&isCpeNameSearch=false)
 
 - La más reciente, las versiones anteriores a la 9.1.8 y la 8.5.14 permiten que un usuario bloquee el intento de inicio de sesión de otro registrando la dirección de correo electrónico de otra persona como nombre de usuario. [CVE-2022-39229](https://nvd.nist.gov/vuln/detail/CVE-2022-39229)
-
+--->
 En sintesis el sistema cuenta con varias vulnerabiliades que permiten la toma de control de dispositivo y la ejecucion de codigo externo.
 
 
@@ -65,24 +65,24 @@ En sintesis el sistema cuenta con varias vulnerabiliades que permiten la toma de
 
 ### Exploitation
 
-- Ingreso forzado a la repetidora y mediante la vulnerabiliad [CVE-2021-38759](https://nvd.nist.gov/vuln/detail/CVE-2021-38759) podría instalar algun exploit.
-- Basandose en las vulnerabilidades [CVE-2020-24572](https://nvd.nist.gov/vuln/detail/CVE-2020-24572) y [CVE-2021-38759](https://nvd.nist.gov/vuln/detail/CVE-2021-38759) puede obtener acceso y hacer lo mismo que en el caso anterior.
+- Ingreso forzado a la repetidora y mediante la vulnerabiliad [CVE-2021-38759](https://nvd.nist.gov/vuln/detail/CVE-2021-38759) podría instalar algún exploit.
+- Basandose en las vulnerabilidades [CVE-2020-24572](https://nvd.nist.gov/vuln/detail/CVE-2020-24572) y [CVE-2021-38759](https://nvd.nist.gov/vuln/detail/CVE-2021-38759) puede obtener acceso remoto y hacer lo mismo que en el caso anterior.
  
 
 ### Installation
 
-- Si logro ingresar por Wi-Fi o logro acceso fisico puede escribir una entrada en cronetab que ejecute un shell reverso.
+- Si logro ingresar por Wi-Fi o logro acceso físico puede escribir una entrada en cronetab que ejecute un [shell reverso](https://bytelearning.blogspot.com/2019/10/reverse-shell.html).
  
 
 ### Command and Control
 
-- Si la ejecucion del cronetab fue exitosa y la conexion saliente no fue detectada por la red operativa ya tiene una consola bash con los privilegios de ese usuario. Teniendo todo el tiempo para el escalamiento de privilegios.
+- Si la ejecución del cronetab fue exitosa y la conexion saliente no fue detectada por la red operativa ya tiene una consola bash con los privilegios de ese usuario. Teniendo todo el tiempo para el [escalamiento de privilegios TA0004](https://attack.mitre.org/tactics/TA0004/) basandose en la vulnerabiliad [CVE-2018-18068](https://nvd.nist.gov/vuln/detail/CVE-2018-18068).
 
 
 ### Actions on Objectives
 
 - Extraccion de informacion de infraestructura de los sistemas de soporte de las estaciones repetidoras.
-- Desplazamiento horizontal para el descubrimiento de la red operativa.
+- Desplazamiento lateral para el descubrimiento de redes adyacentes. [TA0008](https://attack.mitre.org/tactics/TA0008/)
 
 ---------------------------
 Nota de color: [uso de una RPi para atacar el sistema de Aire Acondicionado](https://youtu.be/XTN_-pRZjoU?t=424)
