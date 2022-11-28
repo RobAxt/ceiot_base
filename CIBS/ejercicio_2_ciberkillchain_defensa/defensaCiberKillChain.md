@@ -13,7 +13,7 @@ Desarrolla la defensa en función del ataque planteado en orden inverso
 ### Actions on Objectives
 
 - Uso de herramientas de mitigación como pueden ser los IDS/IPS para detección de comportamientos anómalos.
-- Definción de zonas de seguridad y conductos. A cada zona asignarle los minimos permisos, basandose en el concepto de mínimos privilegios.
+- Definción de zonas de seguridad y conductos. A cada zona asignarle los mínimos permisos, basandose en el concepto de mínimos privilegios.
 
 ### Command and Control
 
