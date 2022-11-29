@@ -71,7 +71,7 @@ En sintesis el sistema cuenta con varias vulnerabiliades que permiten la toma de
 
 ### Installation
 
-- Si logro ingresar por Wi-Fi o logro acceso físico puede escribir una entrada en cronetab que ejecute un [shell reverso](https://bytelearning.blogspot.com/2019/10/reverse-shell.html).
+- Si logro ingresar por Wi-Fi o logro acceso físico puede escribir una entrada en cronetab que ejecute un [shell reverso](https://bytelearning.blogspot.com/2019/10/reverse-shell.html). [T1059](https://attack.mitre.org/techniques/T1059/004/)
  
 
 ### Command and Control
@@ -83,6 +83,9 @@ En sintesis el sistema cuenta con varias vulnerabiliades que permiten la toma de
 
 - Extraccion de informacion de infraestructura de los sistemas de soporte de las estaciones repetidoras.
 - Desplazamiento lateral para el descubrimiento de redes adyacentes. [TA0008](https://attack.mitre.org/tactics/TA0008/)
+- Destrucción de infraestructura física de la repetidora. [T1565](https://attack.mitre.org/techniques/T1565/)
+- Denegación de servicio. [T1499](https://attack.mitre.org/techniques/T1499/)
+- Secuestro de recursos. [T1496](https://attack.mitre.org/techniques/T1496/)
 
 ---------------------------
 Nota de color: [uso de una RPi para atacar el sistema de Aire Acondicionado](https://youtu.be/XTN_-pRZjoU?t=424)
