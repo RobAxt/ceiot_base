@@ -38,5 +38,7 @@ Desarrolla la defensa en función del ataque planteado en orden inverso
  
 ### Weaponization
 
+- Mantener los software lo más actualizados posible.
 
 ### Reconnaissance
+
