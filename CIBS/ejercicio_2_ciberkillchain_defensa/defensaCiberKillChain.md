@@ -42,3 +42,4 @@ Desarrolla la defensa en función del ataque planteado en orden inverso
 
 ### Reconnaissance
 
+- Minimizar el área de cobertura de la red Wi-Fi al interior del Shelter, bajando la potencia de salida.

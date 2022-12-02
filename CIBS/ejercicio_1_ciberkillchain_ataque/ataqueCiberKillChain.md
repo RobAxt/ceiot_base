@@ -23,13 +23,16 @@ Las restantes capas estarán soportadas por la reTerminal de Seeed Studio, que s
 Gather Victim Host Information [T1592](https://attack.mitre.org/techniques/T1592)
 
 - En cada repetidora esta la misma red de sensores Wi-Fi sin acceso a internet, provista por la reTerminal. Aquí el atacante puede descubrir que se trata de un dispositivo con una Raspberry Pi (RPi) [T1592.001](https://attack.mitre.org/techniques/T1592/001/) y de los servicios que brindan [T1592.002](https://attack.mitre.org/techniques/T1592/002/).
+- Podría detectar los dispositivos de la red de sensores y que corresponde a microcontroladores ESP32-C3 [T1592.003](https://attack.mitre.org/techniques/T1592/003/).
+<!---
 - Hurtar fisicamente el dispositivo (reTerminal) y algún nodo de la red de sensores (ESP32-C3) para poder analizar las aplicaciones que corren en la misma [T1592.003](https://attack.mitre.org/techniques/T1592/003/).
-
+--->
 Active Scanning [T1595](https://attack.mitre.org/techniques/T1595):
 
 - Escaneo de vulnerabilidades [T1595.002](https://attack.mitre.org/techniques/T1595/002/). Analizando el tráfico de la red Wi-Fi se puede detectar los protocolos de comunicación que se están usando y descubrir que aplicaciones corren en cada puerto TCP. 
+<!---
 - Escaneo de lista de palabras [T1595.003](https://attack.mitre.org/techniques/T1595/003/). Tanto de manera remota por la red Wi-Fi o con la manipulación física del equipo se puede obtener información del contenido del dispositivo y la infraestructura a la que se encuentra conectado.
-
+--->
 
 ### Weaponization
 
@@ -58,25 +61,27 @@ En sintesis el sistema cuenta con varias vulnerabiliades que permiten la toma de
 
 
 ### Delivery
-
+<!---
 - Ingreso forzado a la estacion repetidora.
+--->
 - Ingreso remoto por la red Wi-Fi de sensores.
 
 
 ### Exploitation
-
+<!---
 - Ingreso forzado a la repetidora y mediante la vulnerabiliad [CVE-2021-38759](https://nvd.nist.gov/vuln/detail/CVE-2021-38759) podría instalar algún exploit.
-- Basandose en las vulnerabilidades [CVE-2020-24572](https://nvd.nist.gov/vuln/detail/CVE-2020-24572) y [CVE-2021-38759](https://nvd.nist.gov/vuln/detail/CVE-2021-38759) puede obtener acceso remoto y hacer lo mismo que en el caso anterior.
+--->
+- Basandose en las vulnerabilidades [CVE-2020-24572](https://nvd.nist.gov/vuln/detail/CVE-2020-24572) y [CVE-2021-38759](https://nvd.nist.gov/vuln/detail/CVE-2021-38759) puede obtener acceso remoto y podría instalar algún exploit.
  
 
 ### Installation
 
-- Si logro ingresar por Wi-Fi o logro acceso físico puede escribir una entrada en cronetab que ejecute un [shell reverso](https://bytelearning.blogspot.com/2019/10/reverse-shell.html). [T1059](https://attack.mitre.org/techniques/T1059/004/)
+- Si logro ingresar por Wi-Fi puede escribir una entrada en cronetab que ejecute un [shell reverso](https://bytelearning.blogspot.com/2019/10/reverse-shell.html). [T1059](https://attack.mitre.org/techniques/T1059/004/)
  
 
 ### Command and Control
 
-- Si la ejecución del cronetab fue exitosa y la conexion saliente no fue detectada por la red operativa ya tiene una consola bash con los privilegios de ese usuario. Teniendo todo el tiempo para el [escalamiento de privilegios TA0004](https://attack.mitre.org/tactics/TA0004/) basandose en la vulnerabiliad [CVE-2018-18068](https://nvd.nist.gov/vuln/detail/CVE-2018-18068).
+- Si la ejecución del cronetab fue exitosa y la conexion saliente no fue detectada por la red operativa ya tiene una consola bash con los privilegios de ese usuario. Teniendo todo el tiempo para el [escalamiento de privilegios TA0004](https://attack.mitre.org/tactics/TA0004/).
 
 
 ### Actions on Objectives
