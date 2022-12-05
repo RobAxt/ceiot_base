@@ -32,10 +32,11 @@ Desarrolla la defensa en función del ataque planteado en orden inverso
 
 ### Delivery
 
-- Uso de alarmas perimetrales o vibraciones de muros para detección de intrusión física.
 - Minimizar el área de cobertura de la red Wi-Fi al interior del Shelter, bajando la potencia de salida.
+<!---
+- Uso de alarmas perimetrales o vibraciones de muros para detección de intrusión física.
 - Desde la configuración no permitir el uso de dispositivos tipo Massive-Storage en los puertos USB.
- 
+ --->
 ### Weaponization
 
 - Mantener los software lo más actualizados posible.
